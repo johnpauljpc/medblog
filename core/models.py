@@ -1,16 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from django.utils import timezone
 from django.utils import timezone
+# from users import CustomUser
 
 # Create your models here.
-class Author(models.Model):
-    pass
+# class Author(models.Model):
+#     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE) 
 
 class articleSeries(models.Model):
     title = models.CharField(max_length=100)
     subtitle = models.CharField(max_length=200)
     slug = models.SlugField('Series slug', unique=True)
-    publised = models.DateTimeField(auto_now_add=True)
+    published = models.DateTimeField('Date published', default=timezone.now)
 
     class Meta:
         verbose_name_plural = "Series"
@@ -22,8 +24,8 @@ class Article(models.Model):
     subtitle = models.CharField(max_length=200, default="no subtittle", blank=True, null=True)
     article_slug = models.SlugField('Article slug', unique=True)
     content = models.TextField()
-    published = models.DateTimeField('publised date', auto_now_add=True)
-    modified = models.DateTimeField('modified date', auto_now=True)
+    published = models.DateTimeField('publised date',  default=timezone.now)
+    modified = models.DateTimeField('modified date',  default=timezone.now)
     series = models.ForeignKey(articleSeries, default="", on_delete=models.SET_DEFAULT)
     # author = models.ForeignKey(Author, on_delete=models.CASCADE)
 

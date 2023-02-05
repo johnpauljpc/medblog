@@ -1,11 +1,27 @@
 from django.contrib import admin
-from .models import Article, Author, articleSeries
-from .model2 import student
+from .models import Article, articleSeries
 
 
+class seriesModel(admin.ModelAdmin):
+     list_display = ['title', 'subtitle' ,'slug', 'published']
+     fieldsets = (
+          ('header', {'fields':['title', 'subtitle', 'slug']}),
+          ('date', {'fields': ['published']})
+     )
+     prepopulated_fields = {'slug': ['title']}
+
+class articleModel(admin.ModelAdmin):
+     list_display = [ 'title',  'subtitle','article_slug', 'published', 'modified']
+
+     fieldsets = (
+          ('head', {'fields': ['title', 'subtitle', 'series']}),
+          ('body', {'fields': ['article_slug','content']}),
+          ('date', {'fields': ['published', 'modified']})
+     )
+     prepopulated_fields = {'article_slug': ('title',)}
+     
 
 # Register your models here.
-admin.site.register(Author)
-admin.site.register(articleSeries)
-admin.site.register(Article)
-admin.site.register(student)
+# admin.site.register(Author)
+admin.site.register(articleSeries, seriesModel)
+admin.site.register(Article, articleModel)
