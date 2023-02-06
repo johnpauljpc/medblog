@@ -15,7 +15,7 @@ class articleModel(admin.ModelAdmin):
 
      fieldsets = (
           ('head', {'fields': ['title', 'subtitle', 'series']}),
-          ('body', {'fields': ['article_slug','content']}),
+          ('body', {'fields': ['article_slug','content', 'note']}),
           ('date', {'fields': ['published', 'modified']})
      )
      prepopulated_fields = {'article_slug': ('title',)}
