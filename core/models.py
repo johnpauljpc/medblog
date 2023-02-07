@@ -34,12 +34,15 @@ class Article(models.Model):
     series = models.ForeignKey(articleSeries, default="", on_delete=models.SET_DEFAULT)
     # author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
+
+    # @property
+    # def slug(self):
+    #     return self.series.slug + "/" + self.article_slug
+    
     def __str__(self):
         return self.title
 
-    @property
-    def slug(self):
-        return slug.article_slug
+    
 
     class Meta:
         pass
