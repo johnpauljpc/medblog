@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Article, articleSeries
 
+
 # Create your views here.
+
+
 def index(request):
     series = articleSeries.objects.all()
     context = {'series': series}
@@ -15,9 +18,11 @@ def series(request, series):
 
 
 
-def article(request):
+def article(request, series, article):
+    article = Article.objects.filter(series__slug=series, article_slug=article).first()
 
-    return render(request, 'core/articles')
+    return render(request, 'core/articles.html', {'article':article})
+
 
 
 

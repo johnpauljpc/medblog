@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block title %} registratio {% endblock title%}
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+    <div class="content-section"> 
+        <form method="POST" style="max-width: 600px;">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                {{ form|crispy }}
+            </fieldset>
+
+            By registering, you accept the Terms of Service and Privacy Notice
+
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+        </form>
+        <div class="border-top pt-3 mt-3" style="max-width: 600px;">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="/login">Sign In</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}

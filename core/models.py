@@ -35,9 +35,9 @@ class Article(models.Model):
     # author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
 
-    # @property
-    # def slug(self):
-    #     return self.series.slug + "/" + self.article_slug
+    @property
+    def slug(self):
+        return self.series.slug + "/" + self.article_slug
     
     def __str__(self):
         return self.title
