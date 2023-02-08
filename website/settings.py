@@ -141,7 +141,10 @@ TINYMCE_DEFAULT_CONFIG = {
     "alignright alignjustify | bullist numlist outdent indent | "
     "removeformat | help",
 }
-
+from django.contrib import messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"

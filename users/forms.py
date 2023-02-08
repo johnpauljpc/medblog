@@ -10,9 +10,9 @@ class UserRegistrationForm(UserCreationForm):
         model = get_user_model()
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
-    def save(self, commit=True):
-        user = super(UserRegistrationForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
+    # def save(self, commit=True):
+    #     user = super(UserRegistrationForm, self).save(commit=False)
+    #     user.email = self.cleaned_data['email']
+    #     if commit:
+    #         user.save()
+    #     return user
