@@ -16,3 +16,7 @@ class UserRegistrationForm(UserCreationForm):
     #     if commit:
     #         user.save()
     #     return user
+
+
+class loginForm():
+    pass
