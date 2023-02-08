@@ -151,3 +151,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = '/'
 # LOGOUT_REDIRECT_URL = 'login'
+
+#over ridding djangos default authentication
+AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']

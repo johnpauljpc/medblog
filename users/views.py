@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 
 from django.contrib.auth import login, authenticate, logout, get_user_model
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, loginForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+
 
 # Create your views here.
 def userRegistration(request):
@@ -34,12 +35,12 @@ def loginView(request):
         return redirect('/')
 
     if request.method == 'POST':
-        form = AuthenticationForm( data = request.POST)
+        form = loginForm( data = request.POST)
         username = request.POST["username"]
         password = request.POST["password"]
         if form.is_valid():
-            user = authenticate(username=username, password=password
-            )
+            user = authenticate(username=username , password=password
+            ) 
             if user is not None:
                 login(request, user)
                 
@@ -51,7 +52,7 @@ def loginView(request):
             for error in list(form.errors.values()):
                 messages.error(request, error) 
 
-    form = AuthenticationForm() 
+    form = loginForm() 
     
     return render(request, "auth/login.html", {'form': form})
 
