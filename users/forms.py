@@ -2,6 +2,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV3
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
@@ -35,3 +37,26 @@ class loginForm(AuthenticationForm):
 
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password'}))
+    
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
+#     captcha = ReCaptchaField(
+#     widget=ReCaptchaV3(
+#         attrs={
+#             'required_score':0.85,
+#         }
+#     )
+# )
+
+# captcha = ReCaptchaField(
+#     widget=ReCaptchaV2Checkbox(
+#         attrs={
+#             'data-theme': 'dark',
+#             'data-size': 'compact',
+#         }
+#     )
+# )
+# The ReCaptchaV2Invisible widget
+# ignores the "data-size" attribute in favor of 'data-size="invisible"'
+
+    

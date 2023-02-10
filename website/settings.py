@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'tinymce',
     "crispy_forms",
     "crispy_bootstrap5",
+    'captcha',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -154,3 +155,8 @@ LOGIN_REDIRECT_URL = '/'
 
 #over ridding djangos default authentication
 AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+
+RECAPTCHA_PUBLIC_KEY = '6LdIOG4kAAAAAJSk_JDKDbKIucQeF7r6lyXXPZHa'
+RECAPTCHA_PRIVATE_KEY = '6LdIOG4kAAAAALsCqUeYWWd6vYloigNmwy6jCSMo'
+
+# RECAPTCHA_REQUIRED_SCORE = 0.85

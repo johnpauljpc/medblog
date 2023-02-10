@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
 
+
 # Create your views here.
 def userRegistration(request):
     if request.user.is_authenticated:
@@ -49,14 +50,20 @@ def loginView(request):
                 
 
         else:
-            for error in list(form.errors.values()):
+            # for error in list(form.errors.values()):
+            for key, error in list(form.errors.items()):
+                if key == 'captcha' and error[0] == 'This field is required.':
+                    messages.error(request, 'You must pass the reCAPTCHA test before proceeding')
+                    continue
                 messages.error(request, error) 
+                print(error)
 
     form = loginForm() 
     
     return render(request, "auth/login.html", {'form': form})
 
 def logoutView(request):
+    
     logout(request)
     messages.info(request, "You have been logged out")
     return render(request, 'auth/logout.html')
