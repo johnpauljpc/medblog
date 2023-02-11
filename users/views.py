@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 
 from django.contrib.auth import login, authenticate, logout, get_user_model
-from .forms import UserRegistrationForm, loginForm
+from .forms import UserRegistrationForm, loginForm, profileForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic import View
+from django.http import HttpResponse
 
 
 
@@ -67,3 +69,29 @@ def logoutView(request):
     logout(request)
     messages.info(request, "You have been logged out")
     return render(request, 'auth/logout.html')
+
+class userProfile(View):
+    def get( self, request, username, *args, **kwargs):
+        user = get_user_model().objects.filter(username=username).first()
+        if user:
+            form = profileForm(instance = user)
+            context = {'user':user, 'form':form}
+            return render(request, 'profile.html', context)
+        else:
+            return redirect('/')
+        
+        
+    def post( self, request, username, *args, **kwargs):
+        user = request.user
+        if user:
+            form = profileForm( request.POST, instance = user,)
+            context = {'user':user, 'form':form}
+
+            if form.is_valid():
+                form.save()
+                messages.info(request, "profile is updated")
+
+            return render(request, 'profile.html', context)
+        else:
+            return redirect('/')
+    

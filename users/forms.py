@@ -1,6 +1,6 @@
 # django_project/users/forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV3
@@ -14,7 +14,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username',  'email','description', 'password1', 'password2']
 
     # def save(self, commit=True):
     #     user = super(UserRegistrationForm, self).save(commit=False)
@@ -40,23 +40,8 @@ class loginForm(AuthenticationForm):
     
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
-#     captcha = ReCaptchaField(
-#     widget=ReCaptchaV3(
-#         attrs={
-#             'required_score':0.85,
-#         }
-#     )
-# )
 
-# captcha = ReCaptchaField(
-#     widget=ReCaptchaV2Checkbox(
-#         attrs={
-#             'data-theme': 'dark',
-#             'data-size': 'compact',
-#         }
-#     )
-# )
-# The ReCaptchaV2Invisible widget
-# ignores the "data-size" attribute in favor of 'data-size="invisible"'
-
-    
+class profileForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name', 'email', 'description']

@@ -20,7 +20,7 @@
                     <a class="nav-item nav-link" href="{% url 'logout' %}">
                         Log out <i class="fas fa-sign-out-alt"></i>
                     </a>
-                    <a class="nav-item nav-link" href="{% url 'register' %}">
+                    <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
                         profile <i class="fas fa-user"></i>
                     </a>
                     {% else %}
