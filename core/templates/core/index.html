@@ -12,7 +12,11 @@
                     <div class="media-body">
                         <a href="/{{object.slug}}">
                             <img class="img-fluid" src="/">
+                            <i>{{object.author}}</i>
                         </a>
+                        |<i> {{object.published|timesince}} ago</i>
+
+                        <hr>
                         <div>
                             <a class="article-title line-clamp-2 title-style" style="font-size: 22px" href="/{{object.slug}}">
                                 {{ object.title }}

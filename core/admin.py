@@ -3,7 +3,7 @@ from .models import Article, articleSeries
 
 
 class seriesModel(admin.ModelAdmin):
-     list_display = ['title', 'subtitle' ,'slug', 'published']
+     list_display = ['title', 'subtitle' ,'author', 'published']
      fieldsets = (
           ('header', {'fields':['title', 'subtitle', 'slug']}),
           ('date', {'fields': ['published']})
@@ -11,10 +11,10 @@ class seriesModel(admin.ModelAdmin):
      prepopulated_fields = {'slug': ['title']}
 
 class articleModel(admin.ModelAdmin):
-     list_display = [ 'title',  'subtitle','article_slug', 'published', 'modified']
+     list_display = [ 'title',  'subtitle','author', 'published', 'modified']
 
      fieldsets = (
-          ('head', {'fields': ['title', 'subtitle', 'series']}),
+          ('head', {'fields': ['title', 'subtitle', 'series', 'author']}),
           ('body', {'fields': ['article_slug','content', 'note']}),
           ('date', {'fields': ['published', 'modified']})
      )

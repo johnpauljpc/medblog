@@ -72,24 +72,26 @@ def logoutView(request):
 
 class userProfile(View):
     def get( self, request, username, *args, **kwargs):
-        user = get_user_model().objects.filter(username=username).first()
-        if user:
+        try:
+            user = get_user_model().objects.get(username=username)
             form = profileForm(instance = user)
-            context = {'user':user, 'form':form}
+            form.fields['description'].widget.attrs = {'rows': 2}
+            
+            context = {'form':form}
             return render(request, 'profile.html', context)
-        else:
+        except:
             return redirect('/')
         
         
     def post( self, request, username, *args, **kwargs):
         user = request.user
         if user:
-            form = profileForm( request.POST, instance = user,)
+            form = profileForm( request.POST, request.FILES, instance = user)
             context = {'user':user, 'form':form}
 
             if form.is_valid():
-                form.save()
-                messages.info(request, "profile is updated")
+                user_form = form.save()
+                messages.info(request, f"{user_form.username}, Your profile has been updated")
 
             return render(request, 'profile.html', context)
         else:

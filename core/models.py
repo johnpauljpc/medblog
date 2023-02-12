@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 # from django.utils import timezone
 from django.utils import timezone
 from tinymce.models import HTMLField
-# from users import CustomUser
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 # class Author(models.Model):
@@ -14,6 +14,7 @@ class articleSeries(models.Model):
     subtitle = models.CharField(max_length=200)
     slug = models.SlugField('Series slug', unique=True)
     published = models.DateTimeField('Date published', default=timezone.now)
+    author = models.ForeignKey(get_user_model(), default=8, on_delete = models.SET_DEFAULT) 
 
     class Meta:
         verbose_name_plural = "Series"
@@ -32,7 +33,7 @@ class Article(models.Model):
     published = models.DateTimeField('publised date',  default=timezone.now)
     modified = models.DateTimeField('modified date',  default=timezone.now)
     series = models.ForeignKey(articleSeries, default="", on_delete=models.SET_DEFAULT)
-    # author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), default=8, on_delete = models.SET_DEFAULT) 
 
 
     @property
