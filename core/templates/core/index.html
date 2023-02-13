@@ -18,6 +18,12 @@
 
                         <hr>
                         <div>
+                            {% if object.image %}
+                            <div class="aspect-ratio-box">
+                                <img class="img-fluid" src="{{ object.image.url }}">
+                            </div>
+                            <hr>
+                            {% endif %}
                             <a class="article-title line-clamp-2 title-style" style="font-size: 22px" href="/{{object.slug}}">
                                 {{ object.title }}
                             </a>
