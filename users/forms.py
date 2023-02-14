@@ -14,7 +14,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'username',  'email','description', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username',  'email', 'picture','description', 'password1', 'password2']
 
     # def save(self, commit=True):
     #     user = super(UserRegistrationForm, self).save(commit=False)
@@ -44,4 +44,4 @@ class loginForm(AuthenticationForm):
 class profileForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email', 'description']
+        fields = ['first_name', 'last_name', 'email', 'picture', 'description']

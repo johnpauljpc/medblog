@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from PIL import Image
 from django.template.defaultfilters import slugify
 import os
+from django.urls import reverse
 
 
 # Create your models here.
@@ -25,7 +26,7 @@ class articleSeries(models.Model):
     slug = models.SlugField('Series slug', unique=True)
     published = models.DateTimeField('Date published', default=timezone.now)
     author = models.ForeignKey(get_user_model(), default=8, on_delete = models.SET_DEFAULT)
-    image = models.ImageField(upload_to=image_upload_to, null= True, blank=True, max_length=200) 
+    image = models.ImageField(upload_to=image_upload_to) 
 
     class Meta:
         verbose_name_plural = "Series"
@@ -50,9 +51,9 @@ class Article(models.Model):
     note = HTMLField(blank = True, null= True, default="no note yet")
     published = models.DateTimeField('publised date',  default=timezone.now)
     modified = models.DateTimeField('modified date',  default=timezone.now)
-    series = models.ForeignKey(articleSeries, default="", on_delete=models.SET_DEFAULT)
+    series = models.ForeignKey(articleSeries, default="", on_delete=models.CASCADE)
     author = models.ForeignKey(get_user_model(), default=8, on_delete = models.SET_DEFAULT) 
-    image = models.ImageField(max_length= 200, upload_to= image_upload_to, default='images/favicon.PNG')
+    image = models.ImageField(upload_to= image_upload_to, default='images/favicon.PNG')
 
 
     @property
@@ -61,11 +62,12 @@ class Article(models.Model):
     
     def __str__(self):
         return self.title
-
+    
+    def get_absolute_url(self):
+	    return reverse('article', kwargs={'series':self.series.slug, 'article':self.article_slug})
     
 
-    class Meta:
-        pass
+    
 
 
 

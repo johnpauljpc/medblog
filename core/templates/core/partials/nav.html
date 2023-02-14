@@ -6,17 +6,25 @@
                 <a class="nav-item nav-link" href="/">Home</a>
             </div>
             <button aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation"
-                    class="navbar-toggler ml-auto float-right btncolor" data-target="#navbarToggle" data-toggle="collapse" type="button">
+                    class="navbar-toggler ml-auto float-end btncolor" data-target="#navbarToggle" data-toggle="collapse" type="button">
                 <i class="fas fa-bars fa-2x"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <!-- Navbar Left Side -->
-                <div class="navbar-nav mr-auto">
+                <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link" href="/">About</a>
                 </div>
                 <!-- Navbar Right Side -->
-                <div class="navbar-nav">
+                <div class="navbar-nav" style="text-align: right;">
                     {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                    <a class="nav-item nav-link" href="admin/">Admin</a>
+                    <a class="nav-item nav-link" href="{% url 'new-series' %}">New Series</a>
+                    <a class="nav-item nav-link" href="{% url 'new-article' %}">New Post</a>
+                 {% endif %}
+
+
+
                     <a class="nav-item nav-link" href="{% url 'logout' %}">
                         Log out <i class="fas fa-sign-out-alt"></i>
                     </a>

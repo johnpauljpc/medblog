@@ -10,7 +10,7 @@
             <div class="col-lg-4 col-md-6 col-sm-12 mobiledevice">
                 <article class="media content-section customhover" style="height: 95%;">
                     <div class="media-body">
-                        <a href="/{{object.slug}}">
+                        <a href="{% url 'profile' object.author %}">
                             <img class="img-fluid" src="{{object.author.picture.url}}" style="border-radius: 50%; max-width: 30px; max-height: 30px;">
                             <i>{{object.author}}</i>
                         </a>
@@ -24,6 +24,21 @@
                             </div>
                             <hr>
                             {% endif %}
+                        
+                        {% if object.author == user %}
+                        <div style="float: right">
+                            {% if type == "s" %}
+                                <a class="btn btncolor btn-sm mt-1 mb-1" href="{% url 'update-series' object.slug %}">Update</a>
+                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete-series' object.slug %}">Delete</a>                   
+                            {% else %}
+                                <a class="btn btncolor btn-sm mt-1 mb-1" href="{% url 'update-article' object.series.slug  object.article_slug %}">Update</a>
+                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete-article' object.series.slug  object.article_slug %}">Delete</a>                      
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+
+
                             <a class="article-title line-clamp-2 title-style" style="font-size: 22px" href="/{{object.slug}}">
                                 {{ object.title }}
                             </a>
