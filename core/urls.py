@@ -8,7 +8,7 @@ urlpatterns = [
     path('new-article/', create_article, name='new-article'),
     path('new-series/', create_series, name='new-series'),
     
-    path('update/<series>/<article_slug>/', update_article, name='update-article'),
+    path('update/<str:series>/<str:article_slug>/', update_article, name='update-article'),
     path('delete/<series>/<article>/', delete_article, name="delete-article"),
 
     

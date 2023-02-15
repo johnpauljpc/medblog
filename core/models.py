@@ -51,7 +51,7 @@ class Article(models.Model):
     note = HTMLField(blank = True, null= True, default="no note yet")
     published = models.DateTimeField('publised date',  default=timezone.now)
     modified = models.DateTimeField('modified date',  default=timezone.now)
-    series = models.ForeignKey(articleSeries, default="", on_delete=models.CASCADE)
+    series = models.ForeignKey(articleSeries, default="", on_delete=models.SET_DEFAULT)
     author = models.ForeignKey(get_user_model(), default=8, on_delete = models.SET_DEFAULT) 
     image = models.ImageField(upload_to= image_upload_to, default='images/favicon.PNG')
 

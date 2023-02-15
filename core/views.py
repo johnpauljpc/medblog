@@ -49,16 +49,37 @@ def create_series(request):
     return render(request, 'core/add_series.html', {'form':form})
 
 
-def update_series(request):
-    pass
+def update_series(request, slug):
+    series = articleSeries.objects.filter(slug=slug).first()
+    
+    if request.method == 'POST':
+        form = SeriesUpdateForm(request.POST, request.FILES, instance=series)
+        context = {'form':form}
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "record updated successfully!")
+            return redirect('/')
+        for error in list(form.errors.values()):
+            messages.error(request, error)
+        return render(request, 'core/new-record.html', context)
+    
+
+    form = SeriesUpdateForm(instance=series)
+    context = {'form':form}
+    return render(request, 'core/new-record.html', context)
 
 def delete_series(request, slug):
     matching_series = articleSeries.objects.filter(slug=slug).first()
 
     if request.method == "POST":
         print('>>>>>>> ',matching_series)
-        matching_series.delete()
-        return redirect('/')
+        try:
+            matching_series.delete()
+            return redirect('/')
+        except Exception as e:
+            messages.error(request, f'{e} >> this series still contains some articles! ')
+            return redirect('/')
     else:
         return render(
             request=request,
@@ -92,7 +113,24 @@ def create_article(request):
     
     return  render(request,'core/new-record.html', context)
 def update_article(request, series, article_slug):
-    return HttpResponse('whatsapp')
+    article = Article.objects.filter(series__slug=series, article_slug=article_slug).first()
+    if request.method == 'POST':
+        form = ArticleUpdateForm (request.POST, request.FILES, instance=article)
+        context = {'form':form}
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "record updated successfully!")
+            return redirect('/')
+        for error in list(form.errors.values()):
+            messages.error(request, error)
+        return render(request, 'core/new-record.html', context)
+    
+
+    form = ArticleUpdateForm(instance=article)
+    context = {'form':form}
+    return render(request, 'core/new-record.html', context)
+
 
 def delete_article(request,series, article):
     article = Article.objects.filter(series__slug=series, article_slug=article).first()
