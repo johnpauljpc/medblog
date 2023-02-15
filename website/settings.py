@@ -165,3 +165,18 @@ RECAPTCHA_PUBLIC_KEY = '6LdIOG4kAAAAAJSk_JDKDbKIucQeF7r6lyXXPZHa'
 RECAPTCHA_PRIVATE_KEY = '6LdIOG4kAAAAALsCqUeYWWd6vYloigNmwy6jCSMo'
 
 # RECAPTCHA_REQUIRED_SCORE = 0.85
+
+
+
+# Emailing settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'iam.jpcg@gmail.com'
+EMAIL_HOST_USER = 'iam.jpcg@gmail.com'
+EMAIL_HOST_PASSWORD = 'ayrmhxqngwgjxyak'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 47770
+
