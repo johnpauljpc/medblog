@@ -5,7 +5,7 @@ from .forms import articleForm, seriesForm, SeriesUpdateForm, ArticleUpdateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .decorators import check_if_user_is_superuser
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -50,6 +50,9 @@ def create_series(request):
 
 
 def update_series(request, slug):
+    if form.instace.author != request.user:
+        messages.info(request, f'{request.user} You are not authorized to update this page')
+        redirect('/')
     series = articleSeries.objects.filter(slug=slug).first()
     
     if request.method == 'POST':
@@ -95,6 +98,8 @@ def create_article(request):
     if request.method == 'POST':
         form = articleForm(request.POST, request.FILES)
         context = { 'form':form}
+        form.instance.author = request.user #to automatically fix the current user as the actual author
+        
         if form.is_valid():
             form.save()
             messages.info(request, "new article created successfuly")
