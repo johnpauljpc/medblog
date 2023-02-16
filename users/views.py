@@ -93,7 +93,7 @@ def loginView(request):
             if user is not None:
                 login(request, user)
                 
-                messages.success(request, f"Hello {user.username}! You have been logged in")
+                messages.success(request, f"Hello <b>{user.username}!</b> You have been logged in")
                 return redirect('/')
                 
 

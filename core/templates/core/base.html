@@ -20,7 +20,7 @@
     <div class="msg">
         <div   class="alert alert-{{msg.tags}} alert-dismissible rem" role="alert" >
             <a href="#" class="close" data-dismiss="alert" aria-label="close"><span class="btn " style=" float: right; color: white; size: 2rem;" onclick="rem()">&times;</span></a>
-            {{msg}}</div>
+            {{msg|safe|escape}}</div>
     </div>
 
     {%endfor%}

@@ -169,8 +169,8 @@ RECAPTCHA_PRIVATE_KEY = '6LdIOG4kAAAAALsCqUeYWWd6vYloigNmwy6jCSMo'
 
 
 # Emailing settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'jpcdjango@gmail.com'
 EMAIL_HOST_USER = 'jpcdjango@gmail.com'
