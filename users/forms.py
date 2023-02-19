@@ -1,6 +1,7 @@
 # django_project/users/forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import (UserCreationForm, AuthenticationForm,
+                                       SetPasswordForm, UserChangeForm)
 from django.contrib.auth import get_user_model
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV3
@@ -45,3 +46,9 @@ class profileForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'email', 'picture', 'description']
+
+
+class changePasswordForm(SetPasswordForm):
+    class Meta:
+        model = get_user_model()
+        fields = '__all__'

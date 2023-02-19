@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 
 from django.contrib.auth import login, authenticate, logout, get_user_model
-from .forms import UserRegistrationForm, loginForm, profileForm
+from .forms import (UserRegistrationForm, loginForm,
+                     profileForm, changePasswordForm)
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import View
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -143,6 +145,21 @@ class userProfile(View):
         else:
             return redirect('/')
         
-
+@login_required(login_url='login')
 def changePasswordView(request):
-    pass
+    user = request.user
+    print(user)
+    form = changePasswordForm(user)
+    context = {
+        'form':form
+    }
+
+    if request.method == 'POST':
+        form = changePasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'password changed successfully, kindly login with new password')
+            return redirect('login')
+        for error in list(form.errors.values()):
+            messages.error(request, error)
+    return render(request, 'auth/change-password.html', context)

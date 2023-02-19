@@ -21,6 +21,7 @@
                     <a class="nav-item nav-link" href="admin/">Admin</a>
                     <a class="nav-item nav-link" href="{% url 'new-series' %}">New Series</a>
                     <a class="nav-item nav-link" href="{% url 'new-article' %}">New Post</a>
+                    
                  {% endif %}
 
 
@@ -31,6 +32,7 @@
                     <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
                         profile <i class="fas fa-user"></i>
                     </a>
+                    <a class="nav-item nav-link" href="{% url 'change-password' %}">reset password</a>
                     {% else %}
                     <a class="nav-item nav-link" href="{% url 'login' %}">
                         Log in <i class="fas fa-sign-in-alt"></i>
