@@ -142,4 +142,7 @@ class userProfile(View):
             return render(request, 'profile.html', context)
         else:
             return redirect('/')
-    
+        
+
+def changePasswordView(request):
+    pass
