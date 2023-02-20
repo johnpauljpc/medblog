@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth import login, authenticate, logout, get_user_model
 from .forms import (UserRegistrationForm, loginForm,
-                     profileForm, changePasswordForm)
+                     profileForm, changePasswordForm, passwordResetForm)
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import View
@@ -14,6 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from django.db.models import Q
 
 from .token import account_activation_token
 
@@ -163,3 +164,90 @@ def changePasswordView(request):
         for error in list(form.errors.values()):
             messages.error(request, error)
     return render(request, 'auth/change-password.html', context)
+
+
+def passwordResetRequest(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    if request.method == 'POST':
+        form = passwordResetForm(data=request.POST)
+        if form.is_valid():
+            user_email = form.cleaned_data['email']
+            associated_user = get_user_model().objects.filter(Q(email=user_email)).first()
+            if associated_user:
+                subject = "Password Reset request"
+                message = render_to_string("template_reset_password.html", {
+                    'user': associated_user,
+                    'domain': get_current_site(request).domain,
+                    'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
+                    'token': account_activation_token.make_token(associated_user),
+                    "protocol": 'https' if request.is_secure() else 'http'
+                })
+                email = EmailMessage(subject, message, to=[associated_user.email])
+                if email.send():
+                    messages.success(request,
+                        """
+                        <h2>Password reset sent</h2><hr>
+                        <p>
+                            We've emailed you instructions for setting your password, if an account exists with the email you entered. 
+                            You should receive them shortly.<br>If you don't receive an email, please make sure you've entered the address 
+                            you registered with, and check your spam folder.
+                        </p>
+                        """
+                    )
+                else:
+                    messages.error(request, "Problem sending reset password email, <b>SERVER PROBLEM</b>")
+
+            return redirect('/')
+        
+
+        for key, error in list(form.errors.items()):
+            messages.error(request,  error)
+            if key == 'captcha' and error[0] == 'This field is required.':
+                messages.error(request, "You must pass the reCAPTCHA test")
+                
+        
+                
+
+
+
+    form = passwordResetForm()
+    context = {
+        'form':form
+    }
+    return render(request, 'auth/password-reset.html', context)
+
+def passwordResetConfirmation(request, uidb64, token):
+
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        if request.method == 'POST':
+            form = changePasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Your password has been set. You may go ahead and <b>log in </b> now.")
+                return redirect('/')
+            else:
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+
+        form = changePasswordForm(user)
+        context = {
+            'form':form
+        }
+        return render(request, 'auth/change-password.html', context)
+    else:
+        messages.error(request, "Link is expired")
+
+    messages.error(request, 'Something went wrong, redirecting back to Homepage')
+    return redirect("/")
+
+
+    

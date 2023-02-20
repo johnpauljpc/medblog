@@ -1,7 +1,7 @@
 # django_project/users/forms.py
 from django import forms
 from django.contrib.auth.forms import (UserCreationForm, AuthenticationForm,
-                                       SetPasswordForm, UserChangeForm)
+                                       SetPasswordForm, UserChangeForm, PasswordResetForm)
 from django.contrib.auth import get_user_model
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV3
@@ -52,3 +52,9 @@ class changePasswordForm(SetPasswordForm):
     class Meta:
         model = get_user_model()
         fields = '__all__'
+
+class passwordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
