@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .decorators import check_if_user_is_superuser
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
@@ -152,7 +152,4 @@ def delete_article(request,series, article):
                 "type": "Article"
                 }
             )
-
-
-
 
