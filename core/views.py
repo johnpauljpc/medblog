@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Article, articleSeries
+from .models import Article, articleSeries, subscriberedUsers
 from .forms import articleForm, seriesForm, SeriesUpdateForm, ArticleUpdateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .decorators import check_if_user_is_superuser
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 # Create your views here.
 
 
@@ -153,3 +156,39 @@ def delete_article(request,series, article):
                 }
             )
 
+
+def subscribe(request):
+    if request.method == 'POST':
+        return redirect('/')
+
+
+def subscribe(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', None)
+        email = request.POST.get('email', None)
+
+        if not name or not email:
+            messages.error(request, "You must type legit name and email to subscribe to a Newsletter")
+            return redirect("/")
+
+        if get_user_model().objects.filter(email=email).first():
+            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+            return redirect(request.META.get("HTTP_REFERER", "/")) 
+
+        subscribe_user = subscriberedUsers.objects.filter(email=email).first()
+        if subscribe_user:
+            messages.error(request, f"{email} email address is already subscriber.")
+            return redirect(request.META.get("HTTP_REFERER", "/"))  
+
+        try:
+            validate_email(email)
+        except ValidationError as e:
+            messages.error(request, e.messages[0])
+            return redirect("/")
+
+        subscribe_model_instance = subscriberedUsers()
+        subscribe_model_instance.name = name
+        subscribe_model_instance.email = email
+        subscribe_model_instance.save()
+        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
+        return redirect(request.META.get("HTTP_REFERER", "/"))

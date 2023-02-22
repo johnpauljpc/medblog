@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, articleSeries
+from .models import Article, articleSeries, subscriberedUsers
 
 
 class seriesModel(admin.ModelAdmin):
@@ -25,3 +25,4 @@ class articleModel(admin.ModelAdmin):
 # admin.site.register(Author)
 admin.site.register(articleSeries, seriesModel)
 admin.site.register(Article, articleModel)
+admin.site.register(subscriberedUsers)
