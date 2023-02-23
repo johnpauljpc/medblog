@@ -19,10 +19,13 @@ class articleModel(admin.ModelAdmin):
           ('date', {'fields': ['published', 'modified']})
      )
      prepopulated_fields = {'article_slug': ('title',)}
+
+class subscribers_adminForm(admin.ModelAdmin):
+     list_display = ('name', 'email', 'created_date', )
      
 
 # Register your models here.
 # admin.site.register(Author)
 admin.site.register(articleSeries, seriesModel)
 admin.site.register(Article, articleModel)
-admin.site.register(subscriberedUsers)
+admin.site.register(subscriberedUsers, subscribers_adminForm)

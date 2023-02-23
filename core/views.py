@@ -172,12 +172,12 @@ def subscribe(request):
             return redirect("/")
 
         if get_user_model().objects.filter(email=email).first():
-            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
-            return redirect(request.META.get("HTTP_REFERER", "/")) 
+            messages.error(request, f"Found registered user with associated <strong>{email}</strong> email. You must login to subscribe or unsubscribe.")
+            return redirect(request.META.get("HTTP_REFERER", "/")) # Redirect to itself ie To the present URL
 
         subscribe_user = subscriberedUsers.objects.filter(email=email).first()
         if subscribe_user:
-            messages.error(request, f"{email} email address is already subscriber.")
+            messages.error(request, f"<b>{email}</b> email address is already subscriber.")
             return redirect(request.META.get("HTTP_REFERER", "/"))  
 
         try:
@@ -190,5 +190,5 @@ def subscribe(request):
         subscribe_model_instance.name = name
         subscribe_model_instance.email = email
         subscribe_model_instance.save()
-        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
+        messages.success(request, f'<b>{email}</b> email was successfully subscribed to our newsletter!')
         return redirect(request.META.get("HTTP_REFERER", "/"))
