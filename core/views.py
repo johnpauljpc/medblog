@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Article, articleSeries, subscriberedUsers
-from .forms import articleForm, seriesForm, SeriesUpdateForm, ArticleUpdateForm
+from .forms import articleForm, seriesForm, SeriesUpdateForm, ArticleUpdateForm, NewsletterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .decorators import check_if_user_is_superuser
@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from django.core.mail import EmailMessage
 # Create your views here.
 
 
@@ -192,3 +193,38 @@ def subscribe(request):
         subscribe_model_instance.save()
         messages.success(request, f'<b>{email}</b> email was successfully subscribed to our newsletter!')
         return redirect(request.META.get("HTTP_REFERER", "/"))
+    
+
+
+
+@check_if_user_is_superuser
+def newsletter(request):
+    if request.method == 'POST':
+        form = NewsletterForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data.get('subject')
+            receivers = form.cleaned_data.get('receivers').split(',')
+            email_message = form.cleaned_data.get('message')
+
+            mail = EmailMessage(subject, email_message, f"medweb <{request.user.email}>", bcc=receivers)
+            mail.content_subtype = 'html'
+
+            if mail.send():
+                messages.success(request, "Email sent succesfully")
+            else:
+                messages.error(request, "There was an error sending email")
+
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+
+        return redirect('/')
+
+
+
+
+    subscribers = subscriberedUsers.objects.all()
+    form = NewsletterForm()
+    form.fields["receivers"].initial = ','.join([jpc.email for jpc in subscribers])
+
+    return render(request=request, template_name='core/newsletter.html', context={"form": form})
