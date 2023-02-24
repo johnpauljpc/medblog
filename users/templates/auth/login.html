@@ -1,8 +1,10 @@
 {% extends "core/base.html" %}
+
 {% load static %}
 {% load crispy_forms_tags %}
 {% block title %}login {% endblock title%} 
 
+{% load socialaccount %}
 
 
 {% block content %}
@@ -14,6 +16,15 @@
 
         <button class="btn btn-info">login</button>
     </form>
+
+    <button class="btn btn-outline-info">
+        <!-- <a href="{% provider_login_url 'google'%}?next=/"> -->
+            <a href="{% provider_login_url 'google' %}">
+            <i class="fab fa-google"></i>
+            Login with Google
+        </a>
+    </button>
+    
     <hr>
     <div class="row">
         <div class="col text-muted"><small> don't have an account? <a href="{% url 'register' %}" style="text-decoration: none; font-weight: bolder;" > 

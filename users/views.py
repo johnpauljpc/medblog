@@ -250,4 +250,6 @@ def passwordResetConfirmation(request, uidb64, token):
     return redirect("/")
 
 
-    
+def signup_redirect(request):
+    messages.error(request, "Something wrong here, it may be that you already have account!")
+    return redirect("/")

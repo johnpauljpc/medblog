@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # AllAUth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'core',
     'users',
     'tinymce',
@@ -160,14 +167,42 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+
+LOGOUT_REDIRECT_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
 # LOGOUT_REDIRECT_URL = 'login'
 
 #over ridding djangos default authentication
-AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend',
+                            'allauth.account.auth_backends.AuthenticationBackend'
+                            ]
 
 RECAPTCHA_PUBLIC_KEY = '6LdIOG4kAAAAAJSk_JDKDbKIucQeF7r6lyXXPZHa'
 RECAPTCHA_PRIVATE_KEY = '6LdIOG4kAAAAALsCqUeYWWd6vYloigNmwy6jCSMo'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '872264807121-8d9avbbitj262ae5srpd34mnieu6fdck.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+
+# SOCIALACCOUNT_LOGIN_ON_GET=True
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 # RECAPTCHA_REQUIRED_SCORE = 0.85
 
