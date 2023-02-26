@@ -3,6 +3,7 @@ from .models import articleSeries, Article
 from tinymce.widgets import TinyMCE
 
 class articleForm(forms.ModelForm):
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
     class Meta:
         model = Article
         fields = ['title' ,'subtitle' ,'article_slug' ,'content' ,'series','image']
