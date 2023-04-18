@@ -209,15 +209,16 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 # Emailing settings
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'jpcdjango@gmail.com'
-EMAIL_HOST_USER = 'jpcdjango@gmail.com'
-EMAIL_HOST_PASSWORD = 'srcgjwixxkpnilsa'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
 
+EMAIL_USE_SSL = True
+EMAIL_PORT = 465
+
+EMAIL_HOST_USER = 'jpcodes.django@gmail.com'
+EMAIL_HOST_PASSWORD = 'cdfjmnvpdgfeqdfl'
 PASSWORD_RESET_TIMEOUT = 47770
 
 TINYMCE_DEFAULT_CONFIG = {
